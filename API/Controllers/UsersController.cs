@@ -10,9 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+  
+    public class UsersController : BaseApiController
     {
         private DataContext _context { get; }
         public UsersController(DataContext context)
@@ -23,14 +22,14 @@ namespace API.Controllers
         [HttpGet]
         public async Task <ActionResult<IEnumerable<User>>> getUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.users.ToListAsync();
             return users;
         }
 
         [HttpGet("{id}")]
         public async Task <ActionResult<User>> getUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.users.FindAsync(id);
             return user;
         }
 
