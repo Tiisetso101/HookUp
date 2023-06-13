@@ -1,8 +1,10 @@
 import { CanDeactivateFn } from '@angular/router';
 import { MemberEditComponent } from '../members/member-edit/member-edit.component';
-import { inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-
+@Injectable({
+  providedIn:'root'
+})
 export class unsavedChanges {
 
   canDeactivate(component: MemberEditComponent) : boolean{
@@ -19,7 +21,6 @@ export const preventUnsavedChangesGuard: CanDeactivateFn<MemberEditComponent> = 
   
   
   return inject(unsavedChanges).canDeactivate(component);
-  //return true;
 };
 
 

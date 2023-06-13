@@ -60,7 +60,6 @@ BenchmarkDotNet.Artifacts/
 # .NET
 project.lock.json
 project.fragment.lock.json
-API/sappsettings.json
 artifacts/
 
 # Tye
@@ -477,3 +476,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+API/appsettings.json

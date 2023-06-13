@@ -72,9 +72,9 @@
                 </h4>
                 <div class="d-flex flex-row align-items-center">
                     <label for="city">City:</label>
-                    <input type="text" [(ngModel)]="member.city">
-                    <label for="country">Country:</label>
-                    <input type="text" [(ngModel)]="member.country">
+                    <input class="form-control"  type="text" name = "city" [(ngModel)]="member.city">
+                    <label for="country" >Country:</label>
+                    <input class="form-control"  type="text"  name = "country" [(ngModel)]="member.country">
                     
                 </div>
             
@@ -83,7 +83,7 @@
         
             <tab heading="Edit Photos">
              
-             <h1>Edit photos here..</h1>
+             <app-photo-editor [member]="member"></app-photo-editor>
                 
             </tab>
           
