@@ -18,11 +18,7 @@ namespace API.Services
                 config.Value.ApiSecret
             );
             _cloudinary = new Cloudinary(acc);
-
-            
         }
-
-    
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
@@ -30,14 +26,15 @@ namespace API.Services
             if(file.Length > 0)
             {
                 using var stream = file.OpenReadStream();
-                var uploadStream = new ImageUploadParams
-                (
-                    /*File = new FileDescription(file.FileName, stream),
+                var uploadStream = new ImageUploadParams()
+                {
+                    File = new FileDescription(file.FileName, stream),
                     Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face"),
-                    Folder = "da-net7"*/
-                );
+                    Folder = "da-net7"
+                };
+                
                  uploadResult = await _cloudinary.UploadAsync(uploadStream);
-            }
+            };
             return uploadResult;
            
         }
