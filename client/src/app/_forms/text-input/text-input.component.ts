@@ -9,30 +9,30 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 export class TextInputComponent implements ControlValueAccessor {
 
   @Input() label = '';
-  @Input() type =''; 
+  @Input() type = 'text';
 
-  constructor(@Self() public ngControl:NgControl){
+  constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this;
   }
 
 
   writeValue(obj: any): void {
-    
+
   }
   registerOnChange(fn: any): void {
-    
+
   }
   registerOnTouched(fn: any): void {
-    
+
   }
 
-  get control() : FormControl {
-    
+  get control(): FormControl {
+
     return this.ngControl.control as FormControl;
   }
- 
- 
 
-  
+
+
+
 
 }
