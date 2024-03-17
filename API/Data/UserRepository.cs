@@ -1,5 +1,6 @@
 using API.Data.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -16,29 +17,46 @@ namespace API.Data
         {
             _mapper = mapper;
             _context = context;
-            
+
         }
 
         public async Task<MemberDTO> GetMemberAsync(string username)
         {
-           return await _context.users
-           .Where(x => x.UserName == username)
-           .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
-           .SingleOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<MemberDTO>> GetMembersAsync()
-        {
             return await _context.users
-           .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
-           .ToListAsync();
+            .Where(x => x.UserName == username)
+            .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
+            .SingleOrDefaultAsync();
         }
 
-       
+        public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
+        {
+            var query = _context.users.AsQueryable();
+
+            query = query.Where(U => U.UserName != userParams.CurrentUser);
+            query = query.Where(U => U.Gender == userParams.Gender);
+
+            var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.maxAge - 1));
+            var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.minAge));
+
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.DateCreated),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+
+            return await PagedList<MemberDTO>.CreateAsync(
+                query.AsNoTracking().ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
+            , userParams.PageNumber,
+             userParams.PageSize);
+        }
+
+
 
         public async Task<IEnumerable<User>> GetUserAsync()
         {
-           return await _context.users.Include(p => p.Photos).ToListAsync();
+            return await _context.users.Include(p => p.Photos).ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -48,13 +66,13 @@ namespace API.Data
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-          return await _context.users.Include(p => p.Photos).
-         SingleOrDefaultAsync(x => x.UserName == username);
+            return await _context.users.Include(p => p.Photos).
+           SingleOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<bool> SaveAllAsync()
         {
-          return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(User user)

@@ -2,32 +2,32 @@
 
     <div class="col-4">
         <div class="card">
-            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}" 
-            class="card-img-top img-thumbnail">
-    <div class="card-body">
-        <div>
-            <strong>Location:</strong>
-            <p> {{member.city}},  {{member.country}}</p>
-        </div>
-        <div>
-            <strong>Age:</strong>
-            <p> {{member.age}}</p>
-        </div>
-        <div>
-            <strong>Last Seen:</strong>
-            <p> {{member.lastActive}}</p>
-        </div>
-        <div>
-            <strong>Member Since:</strong>
-            <p> {{member.dateCreated}}</p>
-        </div>
-    </div>
-    <div class="card-footer">
-        <div class="btn-group d-flex">
-            <button class="btn-primary">Like</button>
-            <button class="btn-success">Messages</button>
-        </div>
-    </div>
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}"
+                class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p> {{member.city}}, {{member.country}}</p>
+                </div>
+                <div>
+                    <strong>Age:</strong>
+                    <p> {{member.age}}</p>
+                </div>
+                <div>
+                    <strong>Last Seen:</strong>
+                    <p> {{member.lastActive +'Z' | timeago}}</p>
+                </div>
+                <div>
+                    <strong>Member Since:</strong>
+                    <p> {{member.dateCreated | date}}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group d-flex">
+                    <button class="btn-primary">Like</button>
+                    <button class="btn-success">Messages</button>
+                </div>
+            </div>
 
         </div>
 
@@ -48,17 +48,17 @@
                     Interests
                 </h4>
                 <p>{{member.interests}}</p>
-                
+
             </tab>
             <tab heading="Photos">
-              <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
-             
-                
+                <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
+
+
             </tab>
             <tab heading="Messages">
-              
+
                 <p>Messages will go here</p>
-                
+
             </tab>
         </tabset>
     </div>

@@ -22,9 +22,11 @@ builder.Services.AddCors();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-    options => {
+    options =>
+    {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
@@ -54,7 +56,7 @@ try
     await context.Database.MigrateAsync();
     await Seed.SeedUsers(context);
 }
-catch(Exception ex)
+catch (Exception ex)
 {
     var logger = services.GetRequiredService<Logger<Program>>();
     logger.LogError(ex, "Error occured");

@@ -477,3 +477,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 API/appsettings.json
+API/Hookup.db-shm
+API/Hookup.db-wal
