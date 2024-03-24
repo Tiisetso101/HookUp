@@ -10,8 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
-
-
     public class UsersController : BaseApiController
     {
         public IMapper _mapper { get; }
@@ -29,6 +27,8 @@ namespace API.Controllers
         public async Task<ActionResult<PagedList<MemberDTO>>> getUsers([FromQuery] UserParams userParams)
         {
             var currentUser = await _repository.GetUserByUsernameAsync(User.GetUsername());
+            if (currentUser == null)
+                return BadRequest("current user not set");
             userParams.CurrentUser = currentUser.UserName;
 
             if (userParams.Gender.IsNullOrEmpty())
@@ -87,15 +87,12 @@ namespace API.Controllers
 
             if (await _repository.SaveAllAsync())
             {
-
-
                 return CreatedAtAction(nameof(getUser), new { username = user.UserName },
                 _mapper.Map<PhotoDTO>(photo));
 
             }
 
             return BadRequest("Problem saving photo");
-
         }
 
         [HttpPut("set-main-photo/{photoId}")]
@@ -144,9 +141,6 @@ namespace API.Controllers
             if (await _repository.SaveAllAsync()) return Ok();
 
             return BadRequest("There was a problem deleting photo");
-
-
-
         }
 
 

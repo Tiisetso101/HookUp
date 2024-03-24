@@ -6,10 +6,10 @@ namespace API.Entities
 {
     public class User
     {
-        
-        public int Id {get;set;}
 
-        public string UserName {get;set;}    
+        public int Id { get; set; }
+
+        public string UserName { get; set; }
 
         public byte[] PasswordHash { get; set; }
 
@@ -35,11 +35,10 @@ namespace API.Entities
 
         public string Country { get; set; }
 
-        public List<Photo> Photos { get; set; } = new List <Photo>();
+        public List<Photo> Photos { get; set; } = new List<Photo>();
 
-        public int getAge()
-        {
-            return DateOfBirth.CalculateAge();
-        }
+        public List<UserLike> LikedUsers { get; set; }
+
+        public List<UserLike> LikedByUsers { get; set; }
     }
 }
