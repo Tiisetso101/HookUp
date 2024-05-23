@@ -4,7 +4,7 @@
             <i class="fa fa-envelope"></i>Unread
         </button>
 
-        <button class="btn btn-primary" btnRadio="Unread" [(ngModel)]="Inbox" (click)="loadMessages()">
+        <button class="btn btn-primary" btnRadio="Unread" [(ngModel)]="container" (click)="loadMessages()">
             <i class="fa fa-envelope-open"></i>Inbox
         </button>
         <button class="btn btn-primary" btnRadio="Outbox" [(ngModel)]="container" (click)="loadMessages()">
@@ -46,7 +46,7 @@
                 </td>
                 <td>{{message.messageSent | timeago}}</td>
                 <td>
-                    <button (click)="$event.stopPropagation()" (click)="deleteMessage(message.Id)"
+                    <button (click)="$event.stopPropagation()" (click)="deleteMessage(message.id)"
                         class="btn btn-danger">Delete</button>
                 </td>
             </tr>

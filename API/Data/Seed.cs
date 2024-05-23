@@ -1,14 +1,15 @@
 using System.Text.Json;
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
     public class Seed
     {
-        public static async Task SeedUsers(DataContext context)
+        public static async Task SeedUsers(UserManager<User> userManager, RoleManager<AppRole> roleManager)
         {
-            if (await context.users.AnyAsync()) return;
+            if (await userManager.Users.AnyAsync()) return;
 
             var userData = await File.ReadAllTextAsync("Data/UserSeed.json");
 
@@ -16,16 +17,31 @@ namespace API.Data
 
             var users = JsonSerializer.Deserialize<List<User>>(userData);
 
-            foreach (var user in users)
+            var roles = new List<AppRole>
             {
+                new AppRole{Name="Member"},
+                new AppRole{Name="Admin"},
+                new AppRole{Name="Moderator"}
+            };
 
-                user.UserName = user.UserName.ToLower();
-
-                context.users.Add(user);
-
+            foreach (var role in roles)
+            {
+                await roleManager.CreateAsync(role);
             }
 
-            await context.SaveChangesAsync();
+            foreach (var user in users)
+            {
+                user.UserName = user.UserName.ToLower();
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, "Member");
+            }
+
+            var admin = new User
+            {
+                UserName = "admin"
+            };
+            await userManager.CreateAsync(admin, "Pa$$w0rd");
+            await userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" });
         }
     }
 }

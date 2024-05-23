@@ -11,7 +11,7 @@ namespace API.Controllers
         public BuggyController(DataContext context)
         {
             _context = context;
-            
+
         }
         [Authorize]
         [HttpGet("auth")]
@@ -23,8 +23,8 @@ namespace API.Controllers
         [HttpGet("not-found")]
         public ActionResult<User> GetNotFound()
         {
-            var thing = _context.users.Find(-1);
-            if(thing == null) return NotFound();
+            var thing = _context.Users.Find(-1);
+            if (thing == null) return NotFound();
 
 
 
@@ -34,7 +34,7 @@ namespace API.Controllers
         [HttpGet("server-error")]
         public ActionResult<string> GetServerError()
         {
-            var thing = _context.users.Find(-1);
+            var thing = _context.Users.Find(-1);
             var thingToReturn = thing.ToString();
 
             return thingToReturn;
