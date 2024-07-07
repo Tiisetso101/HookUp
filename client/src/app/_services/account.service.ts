@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
 import { environment } from 'src/Environments/environment';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AccountService {
   private currentuserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentuserSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private presenceService: PresenceService) { }
 
   login(model: any) {
     return this.http.post<User>(this.baseurl + 'Accounts/login', model).pipe(
@@ -41,10 +42,12 @@ export class AccountService {
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentuserSource.next(user);
+    this.presenceService.createHubConnection(user);
   }
   logout() {
     localStorage.removeItem('user');
     this.currentuserSource.next(null);
+    this.presenceService.stopConnection();
   }
 
   getDecodedToken(token: string) {

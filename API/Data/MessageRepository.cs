@@ -18,6 +18,37 @@ namespace API.Data
             _dataContext = dataContext;
             _mapper = mapper;
         }
+
+        public void AddGroup(Group group)
+        {
+            _dataContext.Groups.Add(group);
+        }
+
+        public async Task<Connection> GetConnection(string connectionId)
+        {
+           return await  _dataContext.Connections.FindAsync(connectionId);
+        }
+
+        public async Task<Group> GetgroupForConnection(string connectionId)
+        {
+           return await _dataContext.Groups
+                        .Include(x => x.connections)
+                        .Where(x => x.connections.Any(c => c.ConnectionId == connectionId))
+                        .FirstOrDefaultAsync();
+        }
+
+        public async Task<Group> GetMessageGroup(string groupName)
+        {
+           return await  _dataContext.Groups
+                    .Include(x => x.connections)
+                    .FirstOrDefaultAsync(x => x.Name == groupName);
+        }
+
+        public void RemoveConnection(Connection connection)
+        {
+           _dataContext.Connections.Remove(connection);
+        }
+
         void IMessagesRepository.AddMessage(Message message)
         {
             _dataContext.Messages.Add(message);
