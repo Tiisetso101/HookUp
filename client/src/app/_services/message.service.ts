@@ -7,7 +7,6 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../_models/user';
 import { BehaviorSubject, take } from 'rxjs';
 import { Group } from '../_models/group';
-import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +62,7 @@ export class MessageService {
   stopHubConnection(){
     if(this.hubConnection){
       this.hubConnection?.stop();
-    }
-    
+    }    
   }
 
   getMessages(pageNumber: number, pageSize: number, container: string) {
