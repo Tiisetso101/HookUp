@@ -1,15 +1,15 @@
 <div class="card">
     <div class="card-body">
-        <div *ngIf="(messageService.messagethread$ | async)?.length ===0">
+        <div *ngIf="(messageService.messageThread$ | async)?.length ===0">
             No messages yet. 
         </div>
         <ul
         #scrollMe
             style ="overflow:scroll;height: 500px;"
             [scrollTop]="scrollMe.scrollHeight"
-        *ngIf="(messageService.messagethread$ | async)!.length > 0" class="chat">
+        *ngIf="(messageService.messageThread$ | async)!.length > 0" class="chat">
             
-            <li *ngFor="let message of (messageService.messagethread$ | async)">
+            <li *ngFor="let message of (messageService.messageThread$ | async)">
                 <div>
                     <span class="chat-img float-end">
                         <img class="rounded-circle" src="{{message.senderPhotoUrl || './assets/user.png'}}"

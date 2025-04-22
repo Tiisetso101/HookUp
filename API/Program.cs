@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,8 +104,7 @@ try
 }
 catch (Exception ex)
 {
-    var logger = services.GetRequiredService<Logger<Program>>();
-    logger.LogError(ex, "Error occured");
+  Console.WriteLine(ex.ToString());
 
 }
 
